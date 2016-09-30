@@ -5,7 +5,7 @@ cl = []
 
 class IndexHandler(web.RequestHandler):
     def get(self):
-        self.render("index.html")
+        self.render("BotControl.html")
 
 class SocketHandler(websocket.WebSocketHandler):
     def check_origin(self, origin):
@@ -24,9 +24,10 @@ class ApiHandler(web.RequestHandler):
     @web.asynchronous
     def get(self, *args):
         self.finish()
-        id = self.get_argument("id")
-        value = self.get_argument("value")
-        data = {"id": id, "value" : value}
+        x = self.get_argument("x")
+        y = self.get_argument("y")
+        data = {"x": x, "y" : y}
+        print data
         data = json.dumps(data)
         for c in cl:
             c.write_message(data)
