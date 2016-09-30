@@ -51,6 +51,7 @@ app = web.Application([
     (r'/(connectionManager.js)', web.StaticFileHandler, {'path': './'}),
     (r'/(viewModel.js)', web.StaticFileHandler, {'path': './'}),
     (r'/(app.js)', web.StaticFileHandler, {'path': './'}),
+    (r'/(BotControl.js)', web.StaticFileHandler, {'path': './'}),
 
 ])
 
