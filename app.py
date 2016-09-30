@@ -41,7 +41,17 @@ app = web.Application([
     (r'/ws', SocketHandler),
     (r'/api', ApiHandler),
     (r'/(favicon.ico)', web.StaticFileHandler, {'path': '../'}),
-    (r'/(rest_api_example.png)', web.StaticFileHandler, {'path': './'}),
+    (r'/(BotControl.css)', web.StaticFileHandler, {'path': './'}),
+    (r'/(adapter.js)', web.StaticFileHandler, {'path': './'}),
+    (r'/(jquery-1.10.2.js)', web.StaticFileHandler, {'path': './'}),
+    (r'/(jquery.signalR-2.2.0.js)', web.StaticFileHandler, {'path': './'}),
+    (r'/(Vector2.js)', web.StaticFileHandler, {'path': './'}),
+    (r'/(victor.min.js)', web.StaticFileHandler, {'path': './'}),
+    (r'/(VectorFacade.js)', web.StaticFileHandler, {'path': './'}),
+    (r'/(connectionManager.js)', web.StaticFileHandler, {'path': './'}),
+    (r'/(viewModel.js)', web.StaticFileHandler, {'path': './'}),
+    (r'/(app.js)', web.StaticFileHandler, {'path': './'}),
+
 ])
 
 if __name__ == '__main__':
