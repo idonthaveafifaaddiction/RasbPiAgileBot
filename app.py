@@ -7,39 +7,21 @@ class IndexHandler(web.RequestHandler):
     def get(self):
         self.render("BotControl.html")
 
-class SocketHandler(websocket.WebSocketHandler):
-    def check_origin(self, origin):
-        return True
-
+class EchoWebSocket(websocket.WebSocketHandler):
     def open(self):
-        if self not in cl:
-            cl.append(self)
+        print("WebSocket opened")
+
+    def on_message(self, message):
+        self.write_message(u"You said: " + message)
 
     def on_close(self):
-        if self in cl:
-            cl.remove(self)
+        print("WebSocket closed")
 
-class ApiHandler(web.RequestHandler):
-
-    @web.asynchronous
-    def get(self, *args):
-        self.finish()
-        x = self.get_argument("x")
-        y = self.get_argument("y")
-        data = {"x": x, "y" : y}
-        print data
-        data = json.dumps(data)
-        for c in cl:
-            c.write_message(data)
-
-    @web.asynchronous
-    def post(self):
-        pass
 
 app = web.Application([
     (r'/', IndexHandler),
-    (r'/ws', SocketHandler),
-    (r'/api', ApiHandler),
+    (r'/ws', EchoWebSocket),
+    #(r'/api', ApiHandler),
     (r'/(favicon.ico)', web.StaticFileHandler, {'path': '../'}),
     (r'/(BotControl.css)', web.StaticFileHandler, {'path': './'}),
     (r'/(adapter.js)', web.StaticFileHandler, {'path': './'}),
