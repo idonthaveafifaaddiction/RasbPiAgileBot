@@ -48,7 +48,8 @@ app = web.Application([
     (r'/(viewModel.js)', web.StaticFileHandler, {'path': './'}),
     (r'/(app.js)', web.StaticFileHandler, {'path': './'}),
     (r'/(BotControl.js)', web.StaticFileHandler, {'path': './'}),
-
+    (r'/(rx.all.min.js)' web.StaticFileHandler, {'path': './'}),
+    (r'/(rx.all.map)' web.StaticFileHandler, {'path': './'})
 ])
 
 if __name__ == '__main__':
