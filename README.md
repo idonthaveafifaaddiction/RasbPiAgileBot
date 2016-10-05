@@ -8,7 +8,7 @@ This is a websocket example written in python.
 
 2. `cd RasbPiAgileBot`
 
-3. Edit index.html
+3. Edit BotControl.html
 
 `var ws = new WebSocket('ws://PiAddress:8888/ws'` <- change to your url/localhost
 
