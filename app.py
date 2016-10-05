@@ -2,8 +2,11 @@ from tornado import websocket, web, ioloop
 import json
 import logging
 
+import robot_handler
+
 logging.basicConfig(level=logging.DEBUG)
 c = []
+rhandle = robot_handler.RobotHandler()
 
 
 class IndexHandler(web.RequestHandler):
@@ -16,9 +19,14 @@ class EchoWebSocket(websocket.WebSocketHandler):
         logging.debug('WebSocket opened')
 
     def on_message(self, message):
+        if message == 'init':
+            return
         c = message.split(',')
-        logging.debug(message)
-        self.write_message(u'You said: X: ' + c[0] + ' Y: ' + c[1])
+        x = int(float(c[1])) * -1 # Negate linear velocity
+        y = int(float(c[0]))
+        #logging.debug(message)
+        self.write_message(u'linear V: ' + str(x) + ' angular V: ' + str(y))
+        rhandle.go(x, y)
 
     def on_close(self):
         logging.debug('WebSocket closed')
@@ -44,5 +52,6 @@ app = web.Application([
 ])
 
 if __name__ == '__main__':
+    rhandle.init_bot(robot_handler.COMPORT_SIM)
     app.listen(8888)
     ioloop.IOLoop.instance().start()
