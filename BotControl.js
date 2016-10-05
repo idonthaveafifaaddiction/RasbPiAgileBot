@@ -423,7 +423,7 @@ $(function ()
 
 
 	ws.onopen = function() {
-		ws.send("Hello, world");
+		ws.send("init");
 	};
 	
 	ws.onmessage = function (evt) {
