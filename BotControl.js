@@ -416,7 +416,7 @@ $('#controls').on('click', '.hangup', function ()
 $(function ()
 {
 
-    var ws = new WebSocket('ws://192.168.11.136:8888/ws');
+    var ws = new WebSocket('ws://' + WS_HOST + ':8888/ws');
     var $message = $('#controls');
     var $cordsContainer = $('#cords');
 
@@ -437,6 +437,6 @@ $(function ()
 
         $cordsContainer.html(cords);
 
-        ws.send("x: " + x + " y: " + y);
+        ws.send(x + ',' + y);
     }
 });

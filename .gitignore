@@ -1,1 +1,2 @@
-.RasbPiAgileBotEnv/ # Daniel's virtualenv folder
+RasbPiAgileBotEnv/**
+config.js

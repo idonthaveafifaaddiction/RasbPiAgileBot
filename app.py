@@ -1,28 +1,34 @@
 from tornado import websocket, web, ioloop
 import json
+import logging
 
-cl = []
+logging.basicConfig(level=logging.DEBUG)
+c = []
+
 
 class IndexHandler(web.RequestHandler):
     def get(self):
-        self.render("BotControl.html")
+        self.render('BotControl.html')
+
 
 class EchoWebSocket(websocket.WebSocketHandler):
     def open(self):
-        print("WebSocket opened")
+        logging.debug('WebSocket opened')
 
     def on_message(self, message):
-        self.write_message(u"You said: " + message)
+        c = message.split(',')
+        logging.debug(message)
+        self.write_message(u'You said: X: ' + c[0] + ' Y: ' + c[1])
 
     def on_close(self):
-        print("WebSocket closed")
+        logging.debug('WebSocket closed')
 
 
 app = web.Application([
     (r'/', IndexHandler),
     (r'/ws', EchoWebSocket),
     #(r'/api', ApiHandler),
-    (r'/(favicon.ico)', web.StaticFileHandler, {'path': '../'}),
+    (r'/(config.js)', web.StaticFileHandler, {'path': './'}),
     (r'/(BotControl.css)', web.StaticFileHandler, {'path': './'}),
     (r'/(adapter.js)', web.StaticFileHandler, {'path': './'}),
     (r'/(jquery-1.10.2.js)', web.StaticFileHandler, {'path': './'}),
