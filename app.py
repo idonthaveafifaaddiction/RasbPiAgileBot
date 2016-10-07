@@ -2,11 +2,11 @@ from tornado import websocket, web, ioloop
 import json
 import logging
 
-import robot_handler
+import breezy_robot_handler
 
 logging.basicConfig(level=logging.DEBUG)
 c = []
-rhandle = robot_handler.RobotHandler()
+rhandle = breezy_robot_handler.RobotHandler()
 
 
 class IndexHandler(web.RequestHandler):
@@ -48,11 +48,11 @@ app = web.Application([
     (r'/(viewModel.js)', web.StaticFileHandler, {'path': './'}),
     (r'/(app.js)', web.StaticFileHandler, {'path': './'}),
     (r'/(BotControl.js)', web.StaticFileHandler, {'path': './'}),
-    (r'/(rx.all.min.js)' web.StaticFileHandler, {'path': './'}),
-    (r'/(rx.all.map)' web.StaticFileHandler, {'path': './'})
+    (r'/(rx.all.min.js)', web.StaticFileHandler, {'path': './'}),
+    (r'/(rx.all.map)', web.StaticFileHandler, {'path': './'})
 ])
 
 if __name__ == '__main__':
-    rhandle.init_bot(robot_handler.COMPORT_SIM)
+    rhandle.init_bot('trash')
     app.listen(8888)
     ioloop.IOLoop.instance().start()

@@ -1,4 +1,4 @@
-#import create
+from breezycreate2 import Robot
 import logging
 import time
 
@@ -10,10 +10,11 @@ COMPORT_SIM = 'sim'
 class RobotHandler:
     def init_bot(self, port):
         global robot
-	bot = Robot()
+	robot = Robot()
         #robot = create.Create(port)
-        logging.debug('robot created at port: ' + port)
+        logging.debug('robot created at port')
 
     def go(self, x, y):
-        if x > -250 and x < 250 and y > -250 and y < 250:
-            robot.drive(x,y)
+        if x > -500 and x < 500 and y > -500 and y < 500:
+            robot.setTurnSpeed(y)
+            robot.setForwardSpeed(x)
