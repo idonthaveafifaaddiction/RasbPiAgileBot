@@ -8,9 +8,9 @@ This is a websocket example written in python.
 
 2. `cd RasbPiAgileBot`
 
-3. Edit BotControl.html
+3. Create config.js from config.js.example and modify properties
 
-`var ws = new WebSocket('ws://PiAddress:8888/ws'` <- change to your url/localhost
+WS_HOST <- change to your url/localhost
 
 4. `pip install -r requirements.txt`
 
