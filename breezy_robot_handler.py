@@ -16,5 +16,7 @@ class RobotHandler:
 
     def go(self, x, y):
         if x > -500 and x < 500 and y > -500 and y < 500:
-            robot.setTurnSpeed(y)
-            robot.setForwardSpeed(x)
+            print('x: ' + str(x) + ' y: ' + str(y))
+            robot.drive(y * 2, x / 2)
+
+

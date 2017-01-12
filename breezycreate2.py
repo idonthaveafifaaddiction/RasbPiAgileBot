@@ -107,6 +107,10 @@ class Robot(object):
         #Packet 100 contains all sensor data.
         self.robot.get_packet(100)
 
+    def drive(self, velocity, radius):
+        self.robot.drive(velocity, radius)
+
+
 class _Error(Exception):
     """Error"""
     pass
