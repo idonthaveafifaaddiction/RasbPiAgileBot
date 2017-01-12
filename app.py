@@ -26,7 +26,10 @@ class EchoWebSocket(websocket.WebSocketHandler):
         y = int(float(c[0]))
         #logging.debug(message)
         self.write_message(u'linear V: ' + str(x) + ' angular V: ' + str(y))
-        rhandle.go(x, y)
+        try:
+            rhandle.go(x, y)
+        except:
+            pass
 
     def on_close(self):
         logging.debug('WebSocket closed')
