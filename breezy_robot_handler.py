@@ -20,20 +20,21 @@ class RobotHandler:
         # Turn in place counterclockwise: 1
         if y != 1 and y != -1:
             
+            # Unless velocity is 0, trim to +/- limit
             if x != 0 and ( x > 100 or x < -100 ):
                 x = x * (x/x)
             if y != 0 and ( y > 100 or y < -100 ): 
                 y = y * (y/y)
 
-            #velocity: A number between -500 and 500. Units are mm/s. 
+            # velocity: A number between -500 and 500. Units are mm/s. 
             x = x * 5
-            #radius: A number between -2000 and 2000. Units are mm.    
+            # radius: A number between -2000 and 2000. Units are mm.    
             y = y * 20 * -1 # Negate radius
 
             # Need some velocity to move when turning
-            if x < 10 and x > -10 and y != 0:
+            if x < 10 and x > -10 and y < 100:
                 x = 200
-                y = 2 * (y/y)
+                #y = 2 * (y/y)
 
             # If radius is very small, drive straight
             if y < 20 and y > -20:
