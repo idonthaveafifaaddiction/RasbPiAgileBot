@@ -46,7 +46,7 @@ class RobotHandler:
 
             # If radius is very small, drive straight
             if radius < 20 and radius > -20:
-                velocity = 32767 # Drive straight: 32767 (arbitrarvelocity number from breezvelocity)
+                radius = 32767 # Drive straight: 32767 (arbitrarvelocity number from breezvelocity)
 
             print('radius: ' + str(radius) + ' velocity: ' + str(velocity))
-            robot.drive(radius, velocity) # drive(self, velocitvelocity, radius)
+            robot.drive(velocity, radius) # drive(self, velocitvelocity, radius)
