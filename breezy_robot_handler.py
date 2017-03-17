@@ -15,30 +15,36 @@ class RobotHandler:
         #robot = create.Create(port)
         logging.debug('robot created at port')
 
-    def go(self, x, y):
+    def go(self, radius, velocity):
         # Turn in place clockwise: -1
         # Turn in place counterclockwise: 1
-        if y != 1 and y != -1:
+        if radius != 1 and radius != -1:
             
             # Unless velocity is 0, trim to +/- limit
-            if x != 0 and ( x > 100 or x < -100 ):
-                x = x * (x/x)
-            if y != 0 and ( y > 100 or y < -100 ): 
-                y = y * (y/y)
+            if radius > 2000
+                radius = 2000
+            if radius < -2000
+                radius = -2000
+            
+            if velocity > 500
+                velocity = 500
+            if velocity < -500
+                velocity = -500
+            
 
-            # velocity: A number between -500 and 500. Units are mm/s. 
-            x = x * 5
+            # velocitvelocity: A number between -500 and 500. Units are mm/s. 
+            radius = radius * 5
             # radius: A number between -2000 and 2000. Units are mm.    
-            y = y * 20 * -1 # Negate radius
+            velocity = velocity * 20 * -1 # Negate radius
 
-            # Need some velocity to move when turning
-            if x < 10 and x > -10 and y < 100:
-                x = 200
-                #y = 2 * (y/y)
+            # Need some velocitvelocity to move when turning
+            if velocity < 10 and velocity > -10 and radius < 100:
+                velocity = 0
+                #velocity = 2 * (velocity/velocity)
 
             # If radius is very small, drive straight
-            if y < 20 and y > -20:
-                y = 32767 # Drive straight: 32767 (arbitrary number from breezy)
+            if radius < 20 and radius > -20:
+                velocity = 32767 # Drive straight: 32767 (arbitrarvelocity number from breezvelocity)
 
-            print('x: ' + str(x) + ' y: ' + str(y))
-            robot.drive(x, y) # drive(self, velocity, radius)
+            print('radius: ' + str(radius) + ' velocity: ' + str(velocity))
+            robot.drive(radius, velocity) # drive(self, velocitvelocity, radius)
