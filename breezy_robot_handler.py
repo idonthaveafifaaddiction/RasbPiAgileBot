@@ -19,23 +19,25 @@ class RobotHandler:
         # Turn in place clockwise: -1
         # Turn in place counterclockwise: 1
         if radius != 1 and radius != -1:
-            
+
+            # velocity: A number between -500 and 500. Units are mm/s. 
+            radius = radius * 2
+            # radius: A number between -2000 and 2000. Units are mm.    
+            velocity = velocity * 10 * -1 # Negate radius
+
+
             # Unless velocity is 0, trim to +/- limit
-            if radius > 2000
+            if radius > 2000:
                 radius = 2000
-            if radius < -2000
+            if radius < -2000:
                 radius = -2000
             
-            if velocity > 500
+            if velocity > 500:
                 velocity = 500
-            if velocity < -500
+            if velocity < -500:
                 velocity = -500
             
 
-            # velocitvelocity: A number between -500 and 500. Units are mm/s. 
-            radius = radius * 5
-            # radius: A number between -2000 and 2000. Units are mm.    
-            velocity = velocity * 20 * -1 # Negate radius
 
             # Need some velocitvelocity to move when turning
             if velocity < 10 and velocity > -10 and radius < 100:
