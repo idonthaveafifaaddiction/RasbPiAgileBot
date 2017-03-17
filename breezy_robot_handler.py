@@ -21,21 +21,21 @@ class RobotHandler:
         if radius != 1 and radius != -1:
 
             # velocity: A number between -500 and 500. Units are mm/s. 
-            radius = radius * 2
+            velocity = velocity * 2
             # radius: A number between -2000 and 2000. Units are mm.    
-            velocity = velocity * 10 * -1 # Negate radius
+            radius = radius * 10 * -1 # Negate radius
 
 
             # Unless velocity is 0, trim to +/- limit
-            if radius > 2000:
-                radius = 2000
-            if radius < -2000:
-                radius = -2000
+            if radius > 1990:
+                radius = 1990
+            if radius < -1990:
+                radius = -1990
             
-            if velocity > 500:
-                velocity = 500
-            if velocity < -500:
-                velocity = -500
+            if velocity > 450:
+                velocity = 450
+            if velocity < -450:
+                velocity = -450
             
 
 
