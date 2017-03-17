@@ -52,11 +52,11 @@ def signalRSetup():
         #create new chat message handler
         def print_received_message(data):
             print('received: ', data)
-            j = json.loads(data)
-            print j['X']
-            print j['Y']
+            #j = json.loads(data)
+            #print j['X']
+            #print j['Y']
             try:
-                rhandle.go(j['X'], j['Y'])
+                rhandle.go(data['X'], data['Y'])
             except:
                 pass
 
@@ -106,5 +106,6 @@ app = web.Application([
 if __name__ == '__main__':
     rhandle.init_bot('trash')
     app.listen(8888)
-    ioloop.IOLoop.instance().start()
     signalRSetup()
+    ioloop.IOLoop.instance().start()
+    
