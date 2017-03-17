@@ -18,12 +18,12 @@ class RobotHandler:
     def go(self, radius, velocity):
         # Turn in place clockwise: -1
         # Turn in place counterclockwise: 1
-        if radius != 1 and radius != -1:
+        if radius != 100000 and radius != -1000000:
 
             # velocity: A number between -500 and 500. Units are mm/s. 
-            velocity = velocity * 2
+            velocity = velocity * 2 * -1 # Negate radius
             # radius: A number between -2000 and 2000. Units are mm.    
-            radius = radius * 10 * -1 # Negate radius
+            radius = radius * 10
 
 
             # Unless velocity is 0, trim to +/- limit
