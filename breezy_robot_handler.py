@@ -2,7 +2,7 @@
 from breezycreate2 import Robot
 import logging
 import time
-from math import sqrt  
+import math
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -20,7 +20,7 @@ class RobotHandler:
 
 
     def go(self, x, y):
-        velocity = sqrt(x * x + y * y)  
+        velocity = math.sqrt(x * x + y * y)  
         radius = x
 
         # Turn in place clockwise: -1
@@ -28,7 +28,7 @@ class RobotHandler:
         if radius != 100000 and radius != -1000000:
 
             # velocity: A number between -500 and 500. Units are mm/s. 
-            velocity = velocity * 2 * (y/y) # Negate radius
+            velocity = math.copysign(velocity * 2, -y)
             # radius: A number between -2000 and 2000. Units are mm.    
             radius = radius * 10 * -1
 
