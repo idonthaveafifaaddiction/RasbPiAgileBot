@@ -1,3 +1,4 @@
 RasbPiAgileBotEnv/**
 config.js
 **.pyc
+.pylintrc
