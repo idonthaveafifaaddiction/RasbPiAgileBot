@@ -25,6 +25,7 @@
 
 import json
 import serial
+import socket
 import struct
 import warnings
 import time
@@ -172,13 +173,20 @@ class _SerialCommandInterface(object):
 
     def __init__(self, com, baud):
 
-        self.ser = serial.Serial()
-        self.ser.port = com
-        self.ser.baudrate = baud
-        if self.ser.isOpen(): 
-            print("port was open")
-            self.ser.close()
-        self.ser.open()
+        self.use_sim = com == 'sim'
+        if self.use_sim:
+            self.sim_host = '127.0.0.1'
+            self.sim_port = 65000
+            self.ser = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.ser.connect((self.sim_host, self.sim_port))
+        else:
+            self.ser = serial.Serial()
+            self.ser.port = com
+            self.ser.baudrate = baud
+            if self.ser.isOpen(): 
+                print("port was open")
+                self.ser.close()
+            self.ser.open()
         print("connected")
     
     def send(self, opcode, data):
@@ -194,7 +202,11 @@ class _SerialCommandInterface(object):
             #Add the opcodes and data together
             bytes = temp_opcode + data
         bytes = tuple([int(b) for b in bytes])
-        self.ser.write(struct.pack('B' * len(bytes), *bytes))
+        if self.use_sim:
+            self.ser.send(struct.pack('B' * len(bytes), *bytes))
+        else:
+            self.ser.write(struct.pack('B' * len(bytes), *bytes))
+        
     
     def Read(self, num_bytes):
         """Read a string of 'num_bytes' bytes from the robot.
@@ -203,7 +215,11 @@ class _SerialCommandInterface(object):
                 num_bytes: The number of bytes we expect to read.
         """
         #logging.debug('Attempting to read %d bytes from SCI port.' % num_bytes)
-        data = self.ser.read(num_bytes)
+        if self.use_sim:
+            data = self.ser.recv(num_bytes)
+        else:
+            data = self.ser.read(num_bytes)
+       
         #logging.debug('Read %d bytes from SCI port.' % len(data))
         if not data:
             raise _ROIFailedToReceiveError('Error reading from SCI port. No data.')
