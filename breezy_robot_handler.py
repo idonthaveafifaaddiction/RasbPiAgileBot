@@ -1,56 +1,50 @@
-
-from breezycreate2 import Robot
 import logging
-import time
 import math
+from breezycreate2 import Robot
+
 
 logging.basicConfig(level=logging.DEBUG)
 
-# Serial port constants
-COMPORT_SIM = 'sim'
-
-def clamp(n, smallest, largest): return max(smallest, min(n, largest))
+def clamp(value, smallest, largest): 
+    return max(smallest, min(value, largest))
 
 class RobotHandler:
-    def init_bot(self, port):
+    def init_bot(self):
         global robot
-        robot = Robot()
-        #robot = create.Create(port)
+        #robot = Robot("65000", "57600")
+        robot = Robot('sim')
         logging.debug('robot created at port')
 
 
-    def go(self, x, y):
+    def go(self, data):
+        x = data['X']
+        y = data['Y']
+     
         velocity = math.sqrt(x * x + y * y)  
-        radius = x
+        velocity = math.copysign(velocity * 2, -y) #scale and fix direction
+        radius = 0
+        if x != 0: #sign of x determines turn direction
+            radius = (math.sin(math.atan(math.fabs(y)/x)) * 1200) + 1
+ 
 
-        # Turn in place clockwise: -1
-        # Turn in place counterclockwise: 1
-        if radius != 100000 and radius != -1000000:
+        # radius: A number between -2000 and 2000. Units are mm.  
+        radius = clamp(radius, -2000, 2000)
+        # velocity: A number between -500 and 500. Units are mm/s. 
+        velocity = clamp(velocity, -500, 500)
+        
+        # Increase area of "stop"
+        if math.fabs(velocity) < 30:
+            velocity = 0
 
-            # velocity: A number between -500 and 500. Units are mm/s. 
-            velocity = math.copysign(velocity * 2, -y)
-            # radius: A number between -2000 and 2000. Units are mm.    
-            radius = radius * 10 * -1
+        # If radius is very small, drive straight
+        if math.fabs(radius) > 1190:
+            radius = 32767
+        elif math.fabs(radius) < 10:
+            radius = math.copysign(1, -radius)
+        
+        #only allow backup to be straight
+        if velocity <= 0:
+            radius = 32767
 
-
-            # Trim to +/- limit
-            radius = clamp(radius, -2000,2000)
-            velocity = clamp(velocity, -500, 500)
-            
-            # Need some velocity to move when turning
-            if velocity < 10 and velocity > -10:
-                velocity = 0
-                #velocity = 2 * (velocity/velocity)
-
-            # If radius is very small, drive straight
-            if radius < 20 and radius > -20:
-                radius = 32767 # Drive straight: 32767 (arbitrary number from breezy)
-
-            #-1 is fast left turn, -2000 is slow left
-            elif radius < 0:
-                radius = -2002 - radius
-            elif radius > 0:
-                radius = 2002 - radius
-
-            print('radius: ' + str(radius) + ' velocity: ' + str(velocity))
-            robot.drive(velocity, radius) # drive(self, velocity, radius)
+        print('velocity: ' + str(math.floor(velocity)) + ' radius: ' + str(math.floor(radius)))
+        robot.drive(math.floor(velocity), math.floor(radius)) # drive(self, velocity, radius)
