@@ -5,6 +5,9 @@ from breezycreate2 import Robot
 
 logging.basicConfig(level=logging.DEBUG)
 
+# Max radius we want to use. 2000 may turn to slowly
+MAX_RADIUS = 1200
+
 def clamp(value, smallest, largest): 
     return max(smallest, min(value, largest))
 
@@ -24,7 +27,7 @@ class RobotHandler:
         velocity = math.copysign(velocity * 2, -y) #scale and fix direction
         radius = 0
         if x != 0: #sign of x determines turn direction
-            radius = (math.sin(math.atan(math.fabs(y)/x)) * 1200) + 1
+            radius = (math.sin(math.atan(math.fabs(y)/x)) * MAX_RADIUS) + 1
  
 
         # radius: A number between -2000 and 2000. Units are mm.  
@@ -37,7 +40,7 @@ class RobotHandler:
             velocity = 0
 
         # If radius is very small, drive straight
-        if math.fabs(radius) > 1190:
+        if math.fabs(radius) > MAX_RADIUS - 20:
             radius = 32767
         elif math.fabs(radius) < 10:
             radius = math.copysign(1, -radius)
