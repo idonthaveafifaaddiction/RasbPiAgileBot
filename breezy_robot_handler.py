@@ -46,5 +46,9 @@ class RobotHandler:
         if velocity <= 0:
             radius = 32767
 
-        print('velocity: ' + str(math.floor(velocity)) + ' radius: ' + str(math.floor(radius)))
-        robot.drive(math.floor(velocity), math.floor(radius)) # drive(self, velocity, radius)
+        # Convert to ints before sending
+        velocity = math.floor(velocity)
+        radius = math.floor(radius)
+
+        print('velocity: ' + str(velocity) + ' radius: ' + str(radius))
+        robot.drive(velocity, radius) # drive(self, velocity, radius)
