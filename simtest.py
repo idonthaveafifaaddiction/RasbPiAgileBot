@@ -2,8 +2,8 @@ import create
 import time
 from breezycreate2 import Robot
 
-robot = create.Create('sim')
-#robot = Robot("65000", "57600")
+#robot = create.Create('/dev/ttyUSB0')
+robot = Robot('/dev/ttyUSB0', "57600")
 
 def write_sensors():
     # robot.robot.get_packet(19)

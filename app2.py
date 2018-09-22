@@ -3,6 +3,8 @@ import logging
 from requests import Session
 from signalr import Connection
 
+from threading import Timer
+
 import breezy_robot_handler
 
 logging.basicConfig(level=logging.DEBUG)
@@ -23,6 +25,8 @@ def signal_r_setup():
         #start a connection
         connection.start()
 
+        t = Timer(.1, RHANDLER.stop)
+        
         hub.server.invoke('registerBot', 'PyBot')
         print('connected to SignalR hub... connection id: ' + connection.token)
 
@@ -31,6 +35,9 @@ def signal_r_setup():
             #print('received: ', data)
             try:
                 RHANDLER.go(data)
+                t.cancel()
+                t = Timer(0.50, RHANDLER.stop)
+                t.start()
             except:
                 pass
 

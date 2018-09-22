@@ -14,20 +14,25 @@ def clamp(value, smallest, largest):
 class RobotHandler:
     def init_bot(self):
         global robot
+        robot = Robot()
         #robot = Robot("65000", "57600")
-        robot = Robot('sim')
+        #robot = Robot('sim')
         logging.debug('robot created at port')
 
 
+    def stop(self):
+        go({'X': 0, 'Y': 0})
+
+        
     def go(self, data):
         x = data['X']
         y = data['Y']
      
         velocity = math.sqrt(x * x + y * y)  
-        velocity = math.copysign(velocity * 2, -y) #scale and fix direction
+        velocity = math.copysign(velocity * 2.5, -y) #scale and fix direction
         radius = 0
         if x != 0: #sign of x determines turn direction
-            radius = (math.sin(math.atan(math.fabs(y)/x)) * MAX_RADIUS) + 1
+            radius = (math.sin(math.atan(math.fabs(y)/-x)) * MAX_RADIUS) + 1
  
 
         # radius: A number between -2000 and 2000. Units are mm.  

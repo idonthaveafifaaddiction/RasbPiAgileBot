@@ -175,7 +175,7 @@ class _SerialCommandInterface(object):
 
         self.use_sim = com == 'sim'
         if self.use_sim:
-            self.sim_host = '127.0.0.1'
+            self.sim_host = '192.168.1.9' #'127.0.0.1'
             self.sim_port = 65000
             self.ser = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.ser.connect((self.sim_host, self.sim_port))
