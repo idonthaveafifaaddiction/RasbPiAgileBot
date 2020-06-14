@@ -3,7 +3,8 @@ from signalr import Connection
 
 with Session() as session:
     #create a connection
-    connection = Connection("https://atbot01.azurewebsites.net/signalr", session)
+    #connection = Connection("https://atbot01.azurewebsites.net/signalr", session)
+    connection = Connection("http://localhost:6658/signalr", session)
 
     #get chat hub
     bot = connection.register_hub('BotControl')
@@ -32,7 +33,7 @@ with Session() as session:
     with connection:
 
         #post new message
-        bot.server.invoke('sendLocation', 'RaspPi')
+        #bot.server.invoke('sendLocation', 'RaspPi')
 
         #wait a second before exit
         connection.wait(60)

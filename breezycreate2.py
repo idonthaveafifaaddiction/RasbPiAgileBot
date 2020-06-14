@@ -111,6 +111,9 @@ class Robot(object):
     def drive(self, velocity, radius):
         self.robot.drive(velocity, radius)
 
+    def drive_direct(self, velocity_right, velocity_left):
+        self.robot.drive_direct(velocity_right, velocity_left)
+
 
 class _Error(Exception):
     """Error"""
@@ -175,7 +178,7 @@ class _SerialCommandInterface(object):
 
         self.use_sim = com == 'sim'
         if self.use_sim:
-            self.sim_host = '192.168.1.9' #'127.0.0.1'
+            self.sim_host = '127.0.0.1'
             self.sim_port = 65000
             self.ser = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.ser.connect((self.sim_host, self.sim_port))
@@ -424,10 +427,59 @@ class _Create2(object):
             raise _ROIFailedToSendError("Invalid data, failed to send")
         
     
-    def drive_direct(self):
+    def drive_direct(self, velocity_right, velocity_left):
         """Not implementing this for now.
         """
         #self.SCI.send(self.config.data['opcodes']['start'],0)
+        """Controls the Create 2's drive wheels.
+        
+            Args:
+                velocity: A number between -500 and 500. Units are mm/s. 
+                radius: A number between -2000 and 2000. Units are mm.
+                    Drive straight: 32767
+                    Turn in place clockwise: -1
+                    Turn in place counterclockwise: 1
+        """
+        noError = True
+        data = []
+        vr = None
+        vl = None
+
+        #Check to make sure we are getting sent valid velocity/radius.
+        
+
+        if velocity_right >= -500 and velocity_right <= 500:
+            vr = int(velocity_right) & 0xffff
+            #Convert 16bit velocity to Hex
+        else:
+            noError = False
+            raise _ROIDataByteError("Invalid velocity_right input")
+
+        if velocity_left >= -500 and velocity_left <= 500:
+            vl = int(velocity_left) & 0xffff
+            #Convert 16bit velocity to Hex
+        else:
+            noError = False
+            raise _ROIDataByteError("Invalid velocity_left input")
+        
+       
+
+        if noError:
+            data = struct.unpack('4B', struct.pack('>2H', vr, vl))
+            #An example of what data looks like:
+            #print data >> (255, 56, 1, 244)
+            
+            #data[0] = Velocity high byte
+            #data[1] = Velocity low byte
+            #data[2] = Radius high byte
+            #data[3] = Radius low byte
+            
+            #Normally we would convert data to a tuple before sending it to SCI
+            #   But struct.unpack already returns a tuple.
+            
+            self.SCI.send(self.config.data['opcodes']['drive_direct'], data)
+        else:
+            raise _ROIFailedToSendError("Invalid data, failed to send")
     
     def drive_pwm(self):
         """Not implementing this for now.
