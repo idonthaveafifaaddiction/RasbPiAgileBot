@@ -16,7 +16,8 @@ def signal_r_setup():
     with Session() as session:
         # create a connection
         #connection = Connection("https://atbot01.azurewebsites.net/signalr", session)
-        connection = Connection("http://localhost:6658/signalr", session)
+        connection = Connection("https://dube.azurewebsites.net/signalr", session)
+        #connection = Connection("http://localhost:6658/signalr", session)
 
         # get control hub
         bot = connection.register_hub('BotControl')
