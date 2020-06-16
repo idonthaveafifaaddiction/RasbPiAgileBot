@@ -35,8 +35,12 @@ def signal_r_setup():
         def handle_bot_control_request(data):
             print('received: ', data)
             try:
-                #RHANDLER.go(data)
-                RHANDLER.go_direct(data)
+                command = data['Command']
+                if(command == "turn"):
+                    RHANDLER.turn(data)
+                else:
+                    #RHANDLER.go(data)
+                    RHANDLER.go_direct(data)
                 t.cancel()
                 t = Timer(0.50, RHANDLER.stop)
                 t.start()
