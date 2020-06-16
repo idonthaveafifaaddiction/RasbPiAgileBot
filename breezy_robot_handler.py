@@ -23,6 +23,16 @@ class RobotHandler:
     def stop(self):
         go({'X': 0, 'Y': 0})
 
+
+    def turn(self, data):
+        velocity = data['Velocity']
+        direction = math.copysign(1, -velocity) 
+        velocity = math.fabs(velocity)
+
+        
+        print('velocity: ' + str(velocity) + ' direction: ' + str(direction))
+
+        robot.drive(velocity, direction)
         
     def go(self, data):
         x = data['X']

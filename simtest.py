@@ -31,5 +31,16 @@ time.sleep(1)
 # write_sensors()
 time.sleep(1)
 
+robot.drive(200, -1)
+time.sleep(3)
+
+
+robot.drive(200, 1)
+time.sleep(3)
+
+
+robot.drive(-200, 1)
+time.sleep(3)
+
 write_sensors()
 #robot.shutdown()
