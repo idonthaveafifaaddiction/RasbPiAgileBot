@@ -41,6 +41,8 @@ class Robot(object):
         self.robot.start()
         self.robot.safe()
 
+        self.robot.digit_led_ascii("jace")
+
     def close(self):
         '''
         Closes the connection to the robot.
@@ -107,6 +109,7 @@ class Robot(object):
 
         #Packet 100 contains all sensor data.
         self.robot.get_packet(100)
+        print self.robot.sensor_state
 
     def drive(self, velocity, radius):
         self.robot.drive(velocity, radius)

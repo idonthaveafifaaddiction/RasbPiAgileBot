@@ -19,7 +19,7 @@ inpsec = 1.86 #2
 # in3 =
 # in4 =
 
-desireddistance = 2
+desireddistance = 10
 
 calctime = desireddistance/inpsec
 
@@ -43,10 +43,14 @@ GPIO.output(in2,GPIO.LOW)
 GPIO.output(en, GPIO.HIGH)
 
 
-down()
+up()
 time.sleep(calctime)
 
 print (calctime)
+
+
+down()
+time.sleep(calctime)
 
 GPIO.output(in1,GPIO.LOW)
 GPIO.output(in2,GPIO.LOW)

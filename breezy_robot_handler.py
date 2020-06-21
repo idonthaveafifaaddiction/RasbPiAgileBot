@@ -2,6 +2,9 @@ import logging
 import math
 from breezycreate2 import Robot
 
+import time
+import RPi.GPIO as GPIO
+
 
 #logging.basicConfig(level=logging.DEBUG)
 
@@ -11,14 +14,40 @@ MAX_RADIUS = 1200
 def clamp(value, smallest, largest): 
     return max(smallest, min(value, largest))
 
+in1 = 35
+in2 = 33
+
 class RobotHandler:
     def init_bot(self):
         global robot
-        #robot = Robot()
+        robot = Robot()
         #robot = Robot("65000", "57600")
-        robot = Robot('sim')
-        logging.debug('robot created at port')
+        #robot = Robot('sim')
+        logging.debug('robot created at port')        
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setup(in1,GPIO.OUT)
+        GPIO.setup(in2,GPIO.OUT)
+        GPIO.output(in1,GPIO.LOW)
+        GPIO.output(in2,GPIO.LOW)
 
+    def get_sensors(self):
+        robot._get_sensor_packet()
+
+    def stopl(self):
+        print('pre stopl')
+        GPIO.output(in1,GPIO.LOW)
+        GPIO.output(in2,GPIO.LOW)
+        print('stop')
+        
+    def up(self):
+        GPIO.output(in1,GPIO.HIGH)
+        GPIO.output(in2,GPIO.LOW)
+        print('up')
+
+    def down(self):
+        GPIO.output(in1,GPIO.LOW)
+        GPIO.output(in2,GPIO.HIGH)
+        print('down')
 
     def stop(self):
         go({'X': 0, 'Y': 0})
@@ -28,11 +57,23 @@ class RobotHandler:
         velocity = data['Velocity']
         direction = math.copysign(1, -velocity) 
         velocity = math.fabs(velocity)
-
         
         print('velocity: ' + str(velocity) + ' direction: ' + str(direction))
 
-        robot.drive(velocity, direction)
+
+        if velocity < 100.0:
+            print('vel0')
+            self.stopl()
+        else:
+            if direction == 1.0:
+                self.up()
+            else:
+                self.down()
+            
+                
+        print('velocity: ' + str(velocity) + ' direction: ' + str(direction))
+
+        #robot.drive(velocity, direction)
         
     def go(self, data):
         x = data['X']

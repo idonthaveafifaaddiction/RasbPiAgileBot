@@ -3,6 +3,7 @@ import logging
 from requests import Session
 from signalr import Connection
 
+
 from threading import Timer
 
 import breezy_robot_handler
@@ -11,7 +12,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 RHANDLER = breezy_robot_handler.RobotHandler()
 
-
+    
 def signal_r_setup():
     with Session() as session:
         # create a connection
@@ -31,11 +32,13 @@ def signal_r_setup():
         #hub.server.invoke('registerBot', 'PyBot')
         print('connected to SignalR hub... connection id: ' + connection.token)
 
+        
         # create new control message handler
         def handle_bot_control_request(data):
             print('received: ', data)
             try:
                 command = data['Command']
+                RHANDLER.get_sensors()
                 if(command == "turn"):
                     RHANDLER.turn(data)
                 else:
@@ -56,6 +59,8 @@ def signal_r_setup():
 
         # process errors
         connection.error += print_error
+
+        
 
         # start connection
         with connection:
