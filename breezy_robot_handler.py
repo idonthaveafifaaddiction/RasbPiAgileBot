@@ -2,9 +2,8 @@ import logging
 import math
 from breezycreate2 import Robot
 
-import time
-import RPi.GPIO as GPIO
-
+import linear_actuator_handler 
+ 
 
 #logging.basicConfig(level=logging.DEBUG)
 
@@ -13,44 +12,39 @@ MAX_RADIUS = 1200
 
 def clamp(value, smallest, largest): 
     return max(smallest, min(value, largest))
-
-in1 = 35
-in2 = 33
+ 
 
 class RobotHandler:
     def init_bot(self):
         global robot
+        global ACTUATOR
+
+        ACTUATOR = linear_actuator_handler.LinearActuatorHandler()
+
         robot = Robot()
         #robot = Robot("65000", "57600")
         #robot = Robot('sim')
-        logging.debug('robot created at port')        
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(in1,GPIO.OUT)
-        GPIO.setup(in2,GPIO.OUT)
-        GPIO.output(in1,GPIO.LOW)
-        GPIO.output(in2,GPIO.LOW)
+        logging.debug('robot created at port')   
+        ACTUATOR.init_linear_actuator() 
+        
 
     def get_sensors(self):
         robot._get_sensor_packet()
 
     def stopl(self):
-        print('pre stopl')
-        GPIO.output(in1,GPIO.LOW)
-        GPIO.output(in2,GPIO.LOW)
-        print('stop')
+        ACTUATOR.stop()
+
         
     def up(self):
-        GPIO.output(in1,GPIO.HIGH)
-        GPIO.output(in2,GPIO.LOW)
-        print('up')
+        ACTUATOR.up()
+
 
     def down(self):
-        GPIO.output(in1,GPIO.LOW)
-        GPIO.output(in2,GPIO.HIGH)
-        print('down')
+        ACTUATOR.down()
+
 
     def stop(self):
-        go({'X': 0, 'Y': 0})
+        self.go({'X': 0, 'Y': 0})
 
 
     def turn(self, data):

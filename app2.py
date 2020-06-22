@@ -1,10 +1,9 @@
 import logging
+import time
 
+from threading import Timer, Thread
 from requests import Session
 from signalr import Connection
-
-
-from threading import Timer
 
 import breezy_robot_handler
 
@@ -22,14 +21,15 @@ def signal_r_setup():
 
         # get control hub
         bot = connection.register_hub('BotControl')
-        #hub = connection.register_hub('WebRtcHub')
+        hub = connection.register_hub('WebRtcHub')
 
         # start a connection
         connection.start()
 
         t = Timer(.1, RHANDLER.stop)
 
-        #hub.server.invoke('registerBot', 'PyBot')
+
+        hub.server.invoke('registerBot', 'PyBot')
         print('connected to SignalR hub... connection id: ' + connection.token)
 
         
@@ -38,7 +38,7 @@ def signal_r_setup():
             print('received: ', data)
             try:
                 command = data['Command']
-                RHANDLER.get_sensors()
+                #RHANDLER.get_sensors()
                 if(command == "turn"):
                     RHANDLER.turn(data)
                 else:
@@ -50,8 +50,24 @@ def signal_r_setup():
             except:
                 pass
 
+        def send_telemetry():
+            cnt = 0
+            """ Method that runs forever """
+            while True:
+                cnt = cnt + 1
+                # Do something                
+                bot.server.invoke('sendBotTelemetry', {"Message": "foobar_" + str(cnt), "Counter": cnt})
+
+                time.sleep(5)
+
         # receive new chat messages from the hub
         bot.client.on('controllerAt', handle_bot_control_request)
+
+        
+
+        thread = Thread(target=send_telemetry, args=())
+        thread.daemon = True                            # Daemonize thread
+        thread.start()    
 
         # create error handler
         def print_error(error):
@@ -63,10 +79,10 @@ def signal_r_setup():
         
 
         # start connection
-        with connection:
+        #with connection:
 
             # wait before exit
-            connection.wait(None)
+        connection.wait(None)
 
 
 if __name__ == '__main__':
