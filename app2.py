@@ -1,5 +1,6 @@
 import logging
 import time
+import json
 
 from threading import Timer, Thread
 from requests import Session
@@ -55,8 +56,9 @@ def signal_r_setup():
             """ Method that runs forever """
             while True:
                 cnt = cnt + 1
-                # Do something                
-                bot.server.invoke('sendBotTelemetry', {"Message": "foobar_" + str(cnt), "Counter": cnt})
+                # Do something
+                j = RHANDLER.get_sensors()
+                bot.server.invoke('sendBotTelemetry', j)
 
                 time.sleep(5)
 

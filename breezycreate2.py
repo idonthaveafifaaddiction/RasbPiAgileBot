@@ -111,6 +111,12 @@ class Robot(object):
         self.robot.get_packet(100)
         print self.robot.sensor_state
 
+    def _get_sensor_state(self):
+
+        #Packet 100 contains all sensor data.
+        self.robot.get_packet(100)
+        return self.robot.sensor_state
+
     def drive(self, velocity, radius):
         self.robot.drive(velocity, radius)
 

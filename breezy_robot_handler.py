@@ -29,7 +29,7 @@ class RobotHandler:
         
 
     def get_sensors(self):
-        robot._get_sensor_packet()
+        return robot._get_sensor_state()
 
     def stopl(self):
         ACTUATOR.stop()
