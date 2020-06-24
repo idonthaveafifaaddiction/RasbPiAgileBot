@@ -40,8 +40,10 @@ def signal_r_setup():
             try:
                 command = data['Command']
                 #RHANDLER.get_sensors()
-                if(command == "turn"):
+                if command == "turn":
                     RHANDLER.turn(data)
+                elif command == "rise":
+                    RHANDLER.rise(data)
                 else:
                     #RHANDLER.go(data)
                     RHANDLER.go_direct(data)
@@ -53,10 +55,10 @@ def signal_r_setup():
 
         def send_telemetry():
             cnt = 0
-            """ Method that runs forever """
+            
             while True:
                 cnt = cnt + 1
-                # Do something
+                
                 j = RHANDLER.get_sensors()
                 bot.server.invoke('sendBotTelemetry', j)
 
@@ -68,7 +70,7 @@ def signal_r_setup():
         
 
         thread = Thread(target=send_telemetry, args=())
-        thread.daemon = True                            # Daemonize thread
+        thread.daemon = True                            
         thread.start()    
 
         # create error handler
@@ -78,12 +80,8 @@ def signal_r_setup():
         # process errors
         connection.error += print_error
 
-        
 
-        # start connection
-        #with connection:
-
-            # wait before exit
+        # wait before exit
         connection.wait(None)
 
 

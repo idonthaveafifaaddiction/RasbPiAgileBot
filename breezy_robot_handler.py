@@ -29,7 +29,7 @@ class RobotHandler:
         
 
     def get_sensors(self):
-        return robot._get_sensor_state()
+        return robot.get_sensor_state()
 
     def stopl(self):
         ACTUATOR.stop()
@@ -46,8 +46,8 @@ class RobotHandler:
     def stop(self):
         self.go({'X': 0, 'Y': 0})
 
-
-    def turn(self, data):
+    
+    def rise(self, data):
         velocity = data['Velocity']
         direction = math.copysign(1, -velocity) 
         velocity = math.fabs(velocity)
@@ -68,6 +68,16 @@ class RobotHandler:
         print('velocity: ' + str(velocity) + ' direction: ' + str(direction))
 
         #robot.drive(velocity, direction)
+        
+    def turn(self, data):
+        velocity = data['Velocity']
+        direction = math.copysign(1, -velocity) 
+        velocity = math.fabs(velocity)
+        
+                
+        print('velocity: ' + str(velocity) + ' direction: ' + str(direction))
+
+        robot.drive(velocity, direction)
         
     def go(self, data):
         x = data['X']
